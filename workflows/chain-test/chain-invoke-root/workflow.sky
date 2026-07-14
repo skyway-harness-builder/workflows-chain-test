@@ -1,0 +1,34 @@
+⊕meta⊕
+name = "chain-invoke-root"
+description = "Invoke-chain root. Logs a marker, then explicitly invokes chain-invoke-leaf by name. Proves that an invoke (naming) crosses the enabled gate: works even when the leaf is registered enabled=0. Fire via: skyway run chain-invoke-root"
+trigger.manual = true
+output_style = "terse"
+⊕⊕
+
+※start※
+Bash root node. Appends a start marker to the shared chain-test log, then hands off to the leaf.
+※※
+
+§start§
+bash = "echo \"invoke-root:start $(date -u +%s)\" >> /tmp/skyway-chain-test.log"
+§§
+
+※leaf※
+Invoke node. Calls chain-invoke-leaf by name with an explicit marker var. This is composition by naming, so it is always allowed regardless of the leaf's enabled flag.
+※※
+
+§leaf§
+depends_on = ["start"]
+invoke.target = "chain-invoke-leaf"
+invoke.vars = {"marker": "from-root"}
+§§
+
+※※
+chain-invoke-root: invoke-chain proof
+
+Pure bash, zero cost, zero credentials. Run it and inspect /tmp/skyway-chain-test.log:
+two lines appear, invoke-root:start then invoke-leaf:land marker=from-root.
+
+The point: a cache-resolved workflow explicitly invoking another cache-resolved
+workflow runs even when both sit at enabled=0. Naming crosses the gate.
+※※

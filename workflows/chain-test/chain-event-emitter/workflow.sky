@@ -1,0 +1,24 @@
+⊕meta⊕
+name = "chain-event-emitter"
+description = "Event-chain head. Manually fired. Logs a marker and emits chaintest.ping. The downstream listeners fire only if they are enabled (matching respects the gate). Fire via: skyway run chain-event-emitter"
+trigger.manual = true
+output_style = "terse"
+⊕⊕
+
+※fire※
+Bash root node. Appends an emitter marker to the shared chain-test log and emits chaintest.ping with stage 1.
+※※
+
+§fire§
+bash = "echo \"event-emitter:fire $(date -u +%s)\" >> /tmp/skyway-chain-test.log"
+emit = {"name": "chaintest.ping", "payload": {"stage": "1"}}
+§§
+
+※※
+chain-event-emitter: event-chain head
+
+Pure bash, zero cost. Run it, then read /tmp/skyway-chain-test.log.
+With chain-event-listener and chain-event-final registered enabled=0, only the
+event-emitter:fire line appears: automatic trigger matching is gated. Enable both
+listeners and re-run to see the full cascade land.
+※※

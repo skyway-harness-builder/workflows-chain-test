@@ -1,0 +1,23 @@
+⊕meta⊕
+name = "chain-event-listener"
+description = "Event-chain middle hop. Triggered automatically by chaintest.ping (only when enabled). Logs the payload stage and emits chaintest.pong to chain the final hop."
+trigger.sky_event.event = "chaintest.ping"
+output_style = "terse"
+⊕⊕
+
+※relay※
+Bash root node. Appends a relay marker with the received payload stage, then emits chaintest.pong with stage 2.
+※※
+
+§relay§
+bash = "echo \"event-listener:relay stage=${SKY_PAYLOAD_STAGE:-none} $(date -u +%s)\" >> /tmp/skyway-chain-test.log"
+emit = {"name": "chaintest.pong", "payload": {"stage": "2"}}
+§§
+
+※※
+chain-event-listener: middle hop
+
+Pure bash, zero cost. Auto-fires on chaintest.ping only when this workflow is
+enabled in the library registry. Consumes the event payload as $SKY_PAYLOAD_STAGE
+and emits chaintest.pong.
+※※

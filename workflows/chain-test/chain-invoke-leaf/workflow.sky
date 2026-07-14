@@ -1,0 +1,23 @@
+⊕meta⊕
+name = "chain-invoke-leaf"
+description = "Invoke-chain leaf. Logs the marker it was handed. Runnable standalone (skyway run chain-invoke-leaf --var marker=hi) or as the invoke target of chain-invoke-root."
+params.marker.type = "string"
+params.marker.description = "Marker string echoed to the chain-test log."
+trigger.manual = true
+output_style = "terse"
+⊕⊕
+
+※land※
+Bash root node. Appends a land marker (with the received marker var) to the shared chain-test log.
+※※
+
+§land§
+bash = "echo \"invoke-leaf:land marker=${SKY_MARKER:-none} $(date -u +%s)\" >> /tmp/skyway-chain-test.log"
+§§
+
+※※
+chain-invoke-leaf: invoke target
+
+Pure bash, zero cost. Receives marker as $SKY_MARKER and logs it. Used to prove
+that an explicit invoke reaches a leaf regardless of its enabled state.
+※※

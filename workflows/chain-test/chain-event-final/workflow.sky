@@ -1,0 +1,21 @@
+⊕meta⊕
+name = "chain-event-final"
+description = "Event-chain tail. Triggered automatically by chaintest.pong (only when enabled). Logs the second-hop payload stage to close the cascade."
+trigger.sky_event.event = "chaintest.pong"
+output_style = "terse"
+⊕⊕
+
+※land※
+Bash root node. Appends the final marker with the received payload stage.
+※※
+
+§land§
+bash = "echo \"event-final:land stage=${SKY_PAYLOAD_STAGE:-none} $(date -u +%s)\" >> /tmp/skyway-chain-test.log"
+§§
+
+※※
+chain-event-final: event-chain tail
+
+Pure bash, zero cost. Auto-fires on chaintest.pong only when enabled. Its marker
+in /tmp/skyway-chain-test.log is the proof the two-hop event cascade completed.
+※※

@@ -1,0 +1,33 @@
+apiVersion: skylence.io/v1
+version: 1.0.0
+updated_at: "2026-07-14"
+stores:
+  - name: chain-test
+    plugin: skyway
+    description: "Deterministic pure-bash fixtures that exercise workflow nesting: invoke chains (naming crosses the enabled gate) and sky_event chains (matching respects the gate). Used to prove the library resolver + enabled-gating behaviour end to end."
+entries:
+  - kind: workflow
+    name: chain-invoke-root
+    path: workflows/chain-test/chain-invoke-root/workflow.sky
+    description: "Invoke-chain root: logs a marker then explicitly invokes chain-invoke-leaf by name."
+    tags: [chain-test, invoke, manual]
+  - kind: workflow
+    name: chain-invoke-leaf
+    path: workflows/chain-test/chain-invoke-leaf/workflow.sky
+    description: "Invoke-chain leaf: logs the marker it was handed. Runnable standalone or as an invoke target."
+    tags: [chain-test, invoke, manual]
+  - kind: workflow
+    name: chain-event-emitter
+    path: workflows/chain-test/chain-event-emitter/workflow.sky
+    description: "Event-chain head: manually fired, logs a marker and emits chaintest.ping."
+    tags: [chain-test, sky_event, manual]
+  - kind: workflow
+    name: chain-event-listener
+    path: workflows/chain-test/chain-event-listener/workflow.sky
+    description: "Event-chain middle hop: auto-fires on chaintest.ping when enabled, emits chaintest.pong."
+    tags: [chain-test, sky_event]
+  - kind: workflow
+    name: chain-event-final
+    path: workflows/chain-test/chain-event-final/workflow.sky
+    description: "Event-chain tail: auto-fires on chaintest.pong when enabled, logs the final marker."
+    tags: [chain-test, sky_event]
